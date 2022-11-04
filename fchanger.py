@@ -96,11 +96,12 @@ while True:
     clear_screen()
     choise = input(''''remove' - удалить нужную подстроку из имени
 'restore' - восстановить все из тегов
-'bspace' - добавить пробел перед подстрокой
+'bspace' - добавить пробел перед подстрокойханьчд
 >>>''')
     if choise == 'remove':
         remove_word()
     if choise == 'restore':
         restore_all_names_from_tag()
     if choise == 'bspace':
-        add_space_before_subline()
+        target = input('Введите слово: ')
+        add_space_before_subline(target)
