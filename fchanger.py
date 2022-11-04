@@ -94,7 +94,10 @@ def add_space_before_subline(target_subline):
 
 while True:
     clear_screen()
-    choise = input('''>>> 'remove' or 'restore:' ''')
+    choise = input(''''remove' - удалить нужную подстроку из имени
+'restore' - восстановить все из тегов
+'bspace' - добавить пробел перед подстрокой
+>>>''')
     if choise == 'remove':
         remove_word()
     if choise == 'restore':
