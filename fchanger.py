@@ -89,6 +89,7 @@ def add_space_before_subline(target_subline):
     for name in filenames:
         new_name = name.replace(target_subline, result_subline)
         new_namelist.append(new_name)
+    new_namelist = get_name_without_ext(new_namelist)
     set_new_names(filenames, new_namelist)
         
 
