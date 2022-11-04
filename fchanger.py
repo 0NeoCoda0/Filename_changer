@@ -58,6 +58,14 @@ def clear_screen():
     os.system("cls")
 
 
+def remove_mutlispaceses(old_list):
+    new_list = []
+    for old_name in old_list:
+        new_name = ' '.join(old_name.split())
+        new_list.append(new_name)
+    return new_list
+
+
 def restore_all_names_from_tag():
     filenames = os.listdir()
     non_modifyed_names_ext = []
@@ -70,6 +78,7 @@ def restore_all_names_from_tag():
             except KeyError:
                 None
     wext_non_mod_name = get_name_without_ext(non_modifyed_names_ext)
+    wext_non_mod_name = remove_mutlispaceses(wext_non_mod_name)
     set_new_names(filenames, wext_non_mod_name)
 
 
@@ -90,8 +99,9 @@ def add_space_before_subline(target_subline):
         new_name = name.replace(target_subline, result_subline)
         new_namelist.append(new_name)
     new_namelist = get_name_without_ext(new_namelist)
+    new_namelist = remove_mutlispaceses(new_namelist)
     set_new_names(filenames, new_namelist)
-        
+
 
 while True:
     clear_screen()
