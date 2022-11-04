@@ -1,14 +1,8 @@
 import os
 import taglib
+import time
 
 # сделать ввод нечувствительным к регистру
-# получить список имен всех файлов в папке
-# получить имя файла без расширения
-# вырезать требуемое слово
-# перезаписать новое имя поверх старого
-
-# заменить все символы разделения в имени файла на пробел
-
 
 # Прежде чем экспериментировать с файлами и их именами, мне определенно необходимо сделать резервную базу данных, чтобы восстановить все в случае багов.
 
@@ -48,7 +42,7 @@ def set_new_names(old_names, new_names):
         try:
             os.rename(old_names[a], new_names[a] + wav_ext)
         except FileExistsError:
-            None
+            os.rename(old_names[a], new_names[a] + ' ' +str(a) + ' ' + wav_ext)
         except IndexError:
             None
         a += 1
@@ -82,37 +76,68 @@ def restore_all_names_from_tag():
     set_new_names(filenames, wext_non_mod_name)
 
 
-def remove_word():
+def remove_word(target_word_one):
     filenames_list = os.listdir()
-    target_word_one = input("Введите слово, которое надо удалить: ")
     trash_list = create_trash_list(filenames_list, target_word_one)
     wext_name = get_name_without_ext(trash_list)
     cleared_names = get_cleared_name(target_word_one, wext_name)
+    cleared_names = remove_mutlispaceses(cleared_names)
     set_new_names(trash_list, cleared_names)
 
+
+def add_space_after_subline(target_subline):
+    filenames = os.listdir()
+    new_namelist = []
+    result_subline = target_subline + ' '
+    for name in filenames:
+        file_ext = os.path.splitext(name)[1]
+        if file_ext == '.wav':
+            new_name = name.replace(target_subline, result_subline)
+            new_namelist.append(new_name)
+    new_namelist = get_name_without_ext(new_namelist)
+    new_namelist = remove_mutlispaceses(new_namelist)
+    set_new_names(filenames, new_namelist)
 
 def add_space_before_subline(target_subline):
     filenames = os.listdir()
     new_namelist = []
     result_subline = ' ' + target_subline
     for name in filenames:
-        new_name = name.replace(target_subline, result_subline)
-        new_namelist.append(new_name)
+        file_ext = os.path.splitext(name)[1]
+        if file_ext == '.wav':
+            new_name = name.replace(target_subline, result_subline)
+            new_namelist.append(new_name)
     new_namelist = get_name_without_ext(new_namelist)
     new_namelist = remove_mutlispaceses(new_namelist)
-    set_new_names(filenames, new_namelist)
-
+    set_new_names(filenames, new_namelist)    
 
 while True:
     clear_screen()
-    choise = input(''''remove' - удалить нужную подстроку из имени
+    print("File changer редактирует имена файлов, помогая навести порядок в библиотеке звуков.\n")
+    print(''''remove' - удалить нужную подстроку из имени
 'restore' - восстановить все из тегов
-'bspace' - добавить пробел перед подстрокойханьчд
+'bspace' - добавить пробел перед подстрокой
+'afspace' - добавить пробел после подстроки
+'exit' - выход из программы
 >>>''')
+    choise = input()
     if choise == 'remove':
-        remove_word()
+        print("Введите слово, которое надо удалить: ")
+        target = input()
+        remove_word(target)
+
     if choise == 'restore':
         restore_all_names_from_tag()
+
     if choise == 'bspace':
-        target = input('Введите слово: ')
+        print('Введите слово: ')
+        target = input()
         add_space_before_subline(target)
+
+    if choise == 'afspace':
+        print('Введите слово: ')
+        target = input()
+        add_space_after_subline(target)
+
+    if choise == 'exit':
+        break
