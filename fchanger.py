@@ -1,6 +1,7 @@
 import os
 import taglib
 import time
+import recover_title
 
 # сделать ввод нечувствительным к регистру
 
@@ -42,7 +43,8 @@ def set_new_names(old_names, new_names):
         try:
             os.rename(old_names[a], new_names[a] + wav_ext)
         except FileExistsError:
-            os.rename(old_names[a], new_names[a] + ' ' +str(a) + ' ' + wav_ext)
+            os.rename(old_names[a], new_names[a] +
+                      ' ' + str(a) + ' ' + wav_ext)
         except IndexError:
             None
         a += 1
@@ -58,22 +60,6 @@ def remove_mutlispaceses(old_list):
         new_name = ' '.join(old_name.split())
         new_list.append(new_name)
     return new_list
-
-
-def restore_all_names_from_tag():
-    filenames = os.listdir()
-    non_modifyed_names_ext = []
-    for pathname in filenames:
-        file_ext = os.path.splitext(pathname)[1]
-        if file_ext == '.wav':
-            song = taglib.File(pathname)
-            try:
-                non_modifyed_names_ext.append(song.tags['TITLE'][0])
-            except KeyError:
-                None
-    wext_non_mod_name = get_name_without_ext(non_modifyed_names_ext)
-    wext_non_mod_name = remove_mutlispaceses(wext_non_mod_name)
-    set_new_names(filenames, wext_non_mod_name)
 
 
 def remove_word(target_word_one):
@@ -98,6 +84,7 @@ def add_space_after_subline(target_subline):
     new_namelist = remove_mutlispaceses(new_namelist)
     set_new_names(filenames, new_namelist)
 
+
 def add_space_before_subline(target_subline):
     filenames = os.listdir()
     new_namelist = []
@@ -109,7 +96,8 @@ def add_space_before_subline(target_subline):
             new_namelist.append(new_name)
     new_namelist = get_name_without_ext(new_namelist)
     new_namelist = remove_mutlispaceses(new_namelist)
-    set_new_names(filenames, new_namelist)    
+    set_new_names(filenames, new_namelist)
+
 
 while True:
     clear_screen()
@@ -126,8 +114,8 @@ while True:
         target = input()
         remove_word(target)
 
-    if choise == 'restore':
-        restore_all_names_from_tag()
+    if choise == 'recover':
+        recover_title.recover_title()
 
     if choise == 'bspace':
         print('Введите слово: ')
