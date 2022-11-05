@@ -2,6 +2,7 @@ import os
 import taglib
 import time
 import recover_title
+import genre_sort
 
 # сделать ввод нечувствительным к регистру
 
@@ -103,29 +104,36 @@ while True:
     clear_screen()
     print("File changer редактирует имена файлов, помогая навести порядок в библиотеке звуков.\n")
     print(''''remove' - удалить нужную подстроку из имени
-'restore' - восстановить все из тегов
-'bspace' - добавить пробел перед подстрокой
-'afspace' - добавить пробел после подстроки
+'recover' - восстановить все из тегов
+'bspace' - добавить пробел перед подстрокой - баги
+'afspace' - добавить пробел после подстроки - баги
+'gsort' - сортировка файлов по папкам в соответствии с тегом "ЖАНР"
 'exit' - выход из программы
 >>>''')
     choise = input()
     if choise == 'remove':
-        print("Введите слово, которое надо удалить: ")
-        target = input()
+        target = input("Введите слово, которое надо удалить: ")
         remove_word(target)
 
     if choise == 'recover':
+        print('Идет чтение тегов и восстановление заголовков.')
         recover_title.recover_title()
 
     if choise == 'bspace':
-        print('Введите слово: ')
-        target = input()
+        target = input('Введите слово: ')
         add_space_before_subline(target)
 
     if choise == 'afspace':
-        print('Введите слово: ')
-        target = input()
+        target = input('Введите слово: ')
         add_space_after_subline(target)
+
+    if choise == 'gsort':
+        genre_sort.genre_sort()
 
     if choise == 'exit':
         break
+
+# v0.5
+# afspace и bspace - работают не корректно, удаляют exe файл, вносят путаницу в имена файлов
+# добавить возможность перевести теги на русский с английского через гугл
+# добавить возможность сохранить теги в json файл и при необходимости их восстановить
