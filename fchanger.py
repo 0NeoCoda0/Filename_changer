@@ -112,8 +112,10 @@ while True:
 >>>''')
     choise = input()
     if choise == 'remove':
-        target = input("Введите слово, которое надо удалить: ")
-        remove_word(target)
+        target = ''
+        while target != "*":
+            target = input("Введите слово, которое надо удалить: ")
+            remove_word(target)
 
     if choise == 'recover':
         print('Идет чтение тегов и восстановление заголовков.')
