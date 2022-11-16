@@ -30,7 +30,7 @@ def main():
     if is_dir(choosen_dir_name):
         dir_path = get_dir_path(choosen_dir_name)
         filename_list = get_filelist(dir_path)
-        target_word = input("Введите целевое слово для удаления: ")
+        target_word = choosen_dir_name
         for old_name in filename_list:
             if is_wav(old_name):
                 new_name = old_name.replace(target_word, '')
